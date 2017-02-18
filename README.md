@@ -1,10 +1,10 @@
-# mattbrictson/rails-template
+####Based on mattbrictson/rails-template
+This version forked for my requirements:
+* Different rubocop rules
+* Gemfile without some gems
 
-## Description
+I suggest to use original version
 
-This is the application template that I use for my Rails 5 projects. As a freelance Rails developer, I need to be able to start new projects quickly and with a good set of defaults. I've assembled this template over the years to include best-practices, tweaks, documentation, and personal preferences, while still generally adhering to the "Rails way".
-
-*For Rails 4.2 projects, use the [rails-42 branch](https://github.com/mattbrictson/rails-template/tree/rails-42).*
 
 ## Requirements
 
@@ -12,8 +12,6 @@ This template currently works with:
 
 * Rails 5.0.x
 * PostgreSQL
-
-If you need help setting up a Ruby development environment, check out my [Rails OS X Setup Guide](https://mattbrictson.com/rails-osx-setup-guide).
 
 ## Installation
 
@@ -23,7 +21,10 @@ To make this the default Rails application template on your system, create a `~/
 
 ```
 -d postgresql
--m https://raw.githubusercontent.com/mattbrictson/rails-template/master/template.rb
+--skip-bundle
+-C
+-T
+-m https://raw.githubusercontent.com/maksim-litvinov/rails-template/master/template.rb
 ```
 
 ## Usage
@@ -39,7 +40,7 @@ To generate a Rails application using this template, pass the `-m` option to `ra
 ```
 rails new blog \
   -d postgresql \
-  -m https://raw.githubusercontent.com/mattbrictson/rails-template/master/template.rb
+  -m https://raw.githubusercontent.com/maksim-litvinov/rails-template/master/template.rb
 ```
 
 *Remember that options must go after the name of the application.* The only database supported by this template is `postgresql`.
@@ -66,37 +67,22 @@ The template will perform the following steps:
 #### These gems are added to the standard Rails stack
 
 * Core
-    * [active_type][] – for building simple and effective form/service objects
+    * [virtus][] – for building simple and effective form/service objects
     * [sidekiq][] – Redis-based job queue implementation for Active Job
 * Configuration
     * [dotenv][] – in place of the Rails `secrets.yml`
 * Utilities
     * [annotate][] – auto-generates schema documentation
     * [autoprefixer-rails][] – automates cross-browser CSS compatibility
-    * [awesome_print][] – try `ap` instead of `puts`
     * [better_errors][] – useful error pages with interactive stack traces
-    * [guard][] – runs tests as you develop; mandatory for effective TDD
-    * [livereload][] – magically refreshes browsers whenever you save a file
     * [rubocop][] – enforces Ruby code style
-    * [xray-rails][] – inspect view partials in the browser
-* Deployment
-    * [capistrano-mb][] – capistrano recipes
-    * [unicorn][] – the industry-standard Rails server
-    * [unicorn-worker-killer][] – to manage memory use
+    * [rubocop-rspec][] – enforces Rspec code style
 * Security
     * [brakeman][] and [bundler-audit][] – detect security vulnerabilities
     * [secure_headers][] – hardens your app against XSS attacks
 * Testing
-    * [capybara][] and [poltergeist][] – integration testing
-    * [minitest-reporters][] – colorizes test output with progress bar and more
-    * [mocha][] – excellent mocking for Test::Unit/Minitest
     * [simplecov][] – code coverage reports
     * [shoulda][] – shortcuts for common ActiveRecord tests
-    * [test_after_commit][] – ensures after_commit hooks can be tested
-
-#### Postmark
-
-I like to use [Postmark][] for transactional email, and so I've included the [postmark-rails][] gem and configured it in `environments/production.rb`. Make sure to sign up for a Postmark account to get an API key, or switch to your own preferred email provider before deploying your app.
 
 #### Bootstrap integration (optional)
 
@@ -111,12 +97,6 @@ I like to use [Postmark][] for transactional email, and so I've included the [po
 * A much-improved `bin/setup` script
 * Log rotation so that development and test Rails logs don’t grow out of control
 
-#### Plus lots of documentation for your project
-
-* `README.md`
-* `PROVISIONING.md`
-* `DEPLOYMENT.md`
-
 ## How does it work?
 
 This project works by hooking into the standard Rails [application templates][] system, with some caveats. The entry point is the [template.rb][] file in the root of this repository.
@@ -127,32 +107,19 @@ This temporary directory is then added to the `source_paths` of the Rails genera
 
 Rails generators are very lightly documented; what you’ll find is that most of the heavy lifting is done by [Thor][]. The most common methods used by this template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into the well-organized and well-documented [Thor source code][thor] to learn more.
 
-[active_type]:https://github.com/makandra/active_type
+[virtus]:https://github.com/solnic/virtus
 [sidekiq]:http://sidekiq.org
 [dotenv]:https://github.com/bkeepers/dotenv
 [annotate]:https://github.com/ctran/annotate_models
 [autoprefixer-rails]:https://github.com/ai/autoprefixer-rails
-[awesome_print]:https://github.com/michaeldv/awesome_print
 [better_errors]:https://github.com/charliesome/better_errors
-[guard]:https://github.com/guard/guard
-[livereload]:https://github.com/guard/guard-livereload
 [rubocop]:https://github.com/bbatsov/rubocop
-[xray-rails]:https://github.com/brentd/xray-rails
-[capistrano-mb]:https://github.com/mattbrictson/capistrano-mb
-[unicorn]:http://unicorn.bogomips.org
-[unicorn-worker-killer]:https://github.com/kzk/unicorn-worker-killer
-[Postmark]:http://postmarkapp.com
-[postmark-rails]:http://www.rubydoc.info/gems/postmark-rails/0.12.0
+[rubocop-rspec]:https://github.com/backus/rubocop-rspec
 [brakeman]:https://github.com/presidentbeef/brakeman
 [bundler-audit]:https://github.com/rubysec/bundler-audit
 [secure_headers]:https://github.com/twitter/secureheaders
-[minitest-reporters]:https://github.com/kern/minitest-reporters
-[capybara]:https://github.com/jnicklas/capybara
-[poltergeist]:https://github.com/teampoltergeist/poltergeist
-[mocha]:https://github.com/freerange/mocha
 [shoulda]:https://github.com/thoughtbot/shoulda
 [simplecov]:https://github.com/colszowka/simplecov
-[test_after_commit]:https://github.com/grosser/test_after_commit
 [Bootstrap]:http://getbootstrap.com
 [application templates]:http://guides.rubyonrails.org/generators.html#application-templates
 [template.rb]: template.rb

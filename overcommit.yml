@@ -21,6 +21,15 @@ PreCommit:
   BundleCheck:
     enabled: true
 
+  BundleAudit:
+    enabled: true
+
+  CssLint:
+    enabled: true
+
+  EsLint:
+    enabled: true
+
   FixMe:
     enabled: true
     keywords: ["FIXME"]
@@ -33,9 +42,21 @@ PreCommit:
   RailsSchemaUpToDate:
     enabled: true
 
+  Reek:
+    enabled: true
+
+  MergeConflicts:
+    enabled: true
+
+  RailsBestPractices:
+    enabled: true
+
   RuboCop:
     enabled: true
     on_warn: fail
+
+  Fasterer:
+    enabled: true
 
   TrailingWhitespace:
     enabled: true
@@ -45,6 +66,15 @@ PreCommit:
   YamlSyntax:
     enabled: true
 
+  JsonSyntax:
+    enabled: true
+
 PostCheckout:
-  ALL:
-    quiet: true
+  BundleInstall:
+    enabled: true
+
+PrePush:
+  Brakeman:
+    enabled: true
+  RSpec:
+    enabled: true

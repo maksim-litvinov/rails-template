@@ -8,29 +8,20 @@ def apply_template!
 
   template "Gemfile.tt", :force => true
 
-  template "DEPLOYMENT.md.tt"
-  template "PROVISIONING.md.tt"
   template "README.md.tt", :force => true
   remove_file "README.rdoc"
 
   template "example.env.tt"
   copy_file "gitignore", ".gitignore", :force => true
-  copy_file "jenkins-ci.sh", :mode => :preserve
   copy_file "overcommit.yml", ".overcommit.yml"
   template "ruby-version.tt", ".ruby-version"
   copy_file "simplecov", ".simplecov"
 
-  copy_file "Capfile"
-  copy_file "Guardfile"
-
-  apply "config.ru.rb"
   apply "app/template.rb"
   apply "bin/template.rb"
   apply "config/template.rb"
-  apply "doc/template.rb"
   apply "lib/template.rb"
   apply "public/template.rb"
-  apply "test/template.rb"
 
   apply "variants/bootstrap/template.rb" if apply_bootstrap?
 
@@ -41,8 +32,7 @@ def apply_template!
   generate_spring_binstubs
 
   binstubs = %w(
-    annotate brakeman bundler-audit capistrano guard rubocop sidekiq
-    terminal-notifier
+    annotate brakeman bundler-audit rubocop sidekiq
   )
   run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')}"
 
@@ -73,7 +63,7 @@ def add_template_repository_to_source_path
     at_exit { FileUtils.remove_entry(tempdir) }
     git :clone => [
       "--quiet",
-      "https://github.com/mattbrictson/rails-template.git",
+      "https://github.com/maksim-litvinov/rails-template.git",
       tempdir
     ].map(&:shellescape).join(" ")
   else
@@ -97,7 +87,6 @@ def assert_valid_options
     :skip_gemfile => false,
     :skip_bundle => false,
     :skip_git => false,
-    :skip_test_unit => false,
     :edge => false
   }
   valid_options.each do |key, expected|
@@ -114,12 +103,6 @@ def assert_postgresql
   fail Rails::Generators::Error,
        "This template requires PostgreSQL, "\
        "but the pg gem isn’t present in your Gemfile."
-end
-
-# Mimic the convention used by capistrano-mb in order to generate
-# accurate deployment documentation.
-def capistrano_app_name
-  app_name.gsub(/[^a-zA-Z0-9_]/, "_")
 end
 
 def git_repo_url
